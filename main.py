@@ -2,7 +2,7 @@ import subprocess
 import sys
 import os
 
-import tkinter
+import tkinter as tk
 import tkinter.messagebox as tkm
 
 from threading import Thread
@@ -23,17 +23,20 @@ def showInfo(msg):
 def showError(msg):
     print(f"[Error] {msg}")
 
-
 def autoInstallPip():
     try:
-        with open(resourcePath("get-pip.py"), "r") as f:
-                installCode = f.read()
-        eval(installCode)
+        pipScript = resourcePath("get-pip.py")
+        # 使用目前的 Python 解釋器執行該腳本
+        result = subprocess.run(
+            [sys.executable, pipScript], 
+            check=True, 
+            text=True)
         showInfo("Pip auto installed successful.")
+        showInfo(f"Output: {result.stdout[:50]}...")
         # 重新自動安裝pyinstaller
         autoInstallPyinstaller()
-    except Exception as e:
-        showError(f"Unexcepted Error: {e}")
+    except subprocess.CalledProcessError as e:
+        showError(f"Pip install failed: {e.stderr}")
         tkm.showerror("Unexpected error", f"Error while installing pip. Error message: {e.stderr} / Error code: {e.returncode}. Please try again.")
 
 def autoInstallPyinstaller():
