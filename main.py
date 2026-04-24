@@ -1,10 +1,10 @@
 import subprocess
 import sys
 import os
-
+'''
 import tkinter as tk
 import tkinter.messagebox as tkm
-
+'''
 from threading import Thread
 
 def resourcePath(relative_path):
@@ -45,12 +45,15 @@ def runCommand(commandList: list):  # return tuple: (isSuccessful, returnCode)
 
 def testPyinstaller():
     showInfo("Testing Pyinstaller...")
-    isSuccessful, _ = runCommand([resourcePath(r"python_core/python.exe"), "-m", "pyinstaller", "--version"])
+    isSuccessful, _ = runCommand([PYINSTALLER_PATH, "--version"])
     if isSuccessful:
         showInfo("Pyinstaller tested successfully")
 
 def main():
     testPyinstaller()
+
+
+PYINSTALLER_PATH = resourcePath(r"python_core/Scripts/pyinstaller.exe")
 
 
 if __name__ == "__main__":
