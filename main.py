@@ -2,6 +2,8 @@ import subprocess
 import sys
 import os
 
+from colorama import init, Fore, Style
+
 import tkinter as tk
 import tkinter.messagebox as tkm
 
@@ -15,11 +17,20 @@ def resourcePath(relative_path):
 
     return os.path.join(base_path, relative_path)
 
-def showInfo(msg):
-    print(f"[info] {msg}")
+def showCode(msg):  # show running code
+    print(Style.BRIGHT + Fore.BLACK + f"[Executing] {msg}")
 
-def showError(msg):
-    print(f"[Error] {msg}")
+def showInfo(msg, msgboxTitle = ""):
+    printMsg = Fore.CYAN + f"[info] {msg}"
+    print(printMsg)
+    if msgboxTitle:
+        tkm.showinfo(msgboxTitle, printMsg)
+
+def showError(msg, msgboxTitle = ""):
+    printMsg = Fore.LIGHTRED_EX + f"[Error] {msg}"
+    print(printMsg)
+    if msgboxTitle:
+        tkm.showerror(msgboxTitle, printMsg)
 
 def runCommand(commandList: list):  # return tuple: (isSuccessful, returnCode)
     try:
@@ -37,11 +48,11 @@ def runCommand(commandList: list):  # return tuple: (isSuccessful, returnCode)
 
     except subprocess.CalledProcessError as e:
         showError(f"Execution failed, error code: {e.returncode}")
-        showError(f"Error message: {e.stderr if e.stderr else e.stdout}")
+        showError(f"Error message: {e.stderr if e.stderr else e.stdout}", "Error8")
         return False, e.returncode
     except Exception as e:
         showError("Execution failed with a unexcepted error")
-        showError(str(e))
+        showError(Fore.LIGHTRED_EX + str(e))
         return False, -1
 
 def testPyinstaller():
@@ -51,6 +62,7 @@ def testPyinstaller():
         showInfo("Pyinstaller tested successfully")
 
 def main():
+    init()  # colorama 的 initialize
     testPyinstaller()
 
 PYTHON_PATH = resourcePath(r"python_core/python.exe")
