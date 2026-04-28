@@ -41,6 +41,8 @@ def runCommand(commandList: list):  # return tuple: (isSuccessful, returnCode)
             check=True,   # 執行有問題會raise Error
             env = ENV    # 自行注入環境變數
         )
+
+        showCode(commandList.join(" "))
         
         showInfo("Executed successfully")
         showInfo(f"Output: {result.stdout}")
@@ -48,11 +50,11 @@ def runCommand(commandList: list):  # return tuple: (isSuccessful, returnCode)
 
     except subprocess.CalledProcessError as e:
         showError(f"Execution failed, error code: {e.returncode}")
-        showError(f"Error message: {e.stderr if e.stderr else e.stdout}", "Error8")
+        showError(f"Error message: {e.stderr if e.stderr else e.stdout}", "Error")
         return False, e.returncode
     except Exception as e:
         showError("Execution failed with a unexcepted error")
-        showError(Fore.LIGHTRED_EX + str(e))
+        showError(Fore.LIGHTRED_EX + str(e), "Error")
         return False, -1
 
 def testPyinstaller():
