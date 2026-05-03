@@ -9,6 +9,24 @@ import tkinter.messagebox as tkm
 
 from threading import Thread
 
+class MainWindow:
+    def __init__(self, root: tk.Tk):
+        # windows
+        self.root = root
+        self.root.title("Pyinstaller GUI")
+        self.root.geometry("600x600")
+
+        # labels
+        self.title = tk.Label(self.root, 
+                              width = 500, 
+                              height = 10, 
+                              text = "Pyinstaller GUI", 
+                              font = (FONT_PATH, )
+                              )
+        self.title.pack()
+
+
+
 def resourcePath(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -18,17 +36,18 @@ def resourcePath(relative_path):
     return os.path.join(base_path, relative_path)
 
 def showCode(msg):  # show running code
-    print(Style.BRIGHT + Fore.BLACK + f"[Executing] {msg}")
+    # Style.BRIGHT + 
+    print(Fore.BLACK + f"[Executing] {msg}")
 
 def showInfo(msg, msgboxTitle = ""):
-    printMsg = Fore.CYAN + f"[info] {msg}"
-    print(printMsg)
+    printMsg = f"[info] {msg}"
+    print(Fore.CYAN + printMsg)
     if msgboxTitle:
         tkm.showinfo(msgboxTitle, printMsg)
 
 def showError(msg, msgboxTitle = ""):
-    printMsg = Fore.LIGHTRED_EX + f"[Error] {msg}"
-    print(printMsg)
+    printMsg = f"[Error] {msg}"
+    print(Fore.LIGHTRED_EX + printMsg)
     if msgboxTitle:
         tkm.showerror(msgboxTitle, printMsg)
 
@@ -42,7 +61,7 @@ def runCommand(commandList: list):  # return tuple: (isSuccessful, returnCode)
             env = ENV    # 自行注入環境變數
         )
 
-        showCode(commandList.join(" "))
+        showCode(" ".join(commandList))
         
         showInfo("Executed successfully")
         showInfo(f"Output: {result.stdout}")
@@ -62,20 +81,31 @@ def testPyinstaller():
     isSuccessful, _ = runCommand([PYTHON_PATH, "-m", "PyInstaller", "--version"])
     if isSuccessful:
         showInfo("Pyinstaller tested successfully")
+    else:
+        showError("Because the Pyinstaller couldn't execute successfully, the app can't run now. Please try it later or contact the developer", "Error")
+        sys.exit()
 
 def main():
     init()  # colorama 的 initialize
     testPyinstaller()
+
+    root = tk.Tk()
+    app = MainWindow(root)
+    root.mainloop()
+
 
 PYTHON_PATH = resourcePath(r"python_core/python.exe")
 PYINSTALLER_PATH = resourcePath(r"python_core/Scripts/pyinstaller.exe")
 CORE_PATH = resourcePath("python_core")
 LIB_PATH = os.path.join(CORE_PATH, "Lib", "site-packages")
 
+FONT_PATH
+
 # 建立自定義環境變數
 ENV = os.environ.copy()
 ENV["PATH"] = CORE_PATH + os.pathsep + ENV.get("PATH", "")  # 確保PATH包含python_core 讓pyinstaller.exe可以找到python313.dll
 ENV["PYTHONPATH"] = LIB_PATH    # 確保PYTHONPATH 包含site-packages
+
 
 
 if __name__ == "__main__":
