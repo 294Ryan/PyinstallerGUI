@@ -106,7 +106,9 @@ Download the latest release from [Releases](./releases) and extract it.
 PyinstallerGUI/
 ├── .gitignore                  # Git ignore rules
 ├── README.md                   # This file
-└── tk_pyinstaller_gui.py       # Single-file application entry point
+├── icon.ico                    # App icon file
+├── tk_pyinstaller_gui.py       # Single-file application entry point
+└── tk_pyinstaller_gui.spec     # .spec file
 ```
 
 ---
