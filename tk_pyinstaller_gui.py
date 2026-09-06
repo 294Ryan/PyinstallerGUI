@@ -722,7 +722,8 @@ class App(tk.Tk):
             try:
                 proc = subprocess.Popen(
                     cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                    text=True, encoding="utf-8", errors="replace"
+                    text=True, encoding="utf-8", errors="replace",
+                    creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
                 )
                 for line in proc.stdout:
                     self.after(0, self._logWrite, line)
