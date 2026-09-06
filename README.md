@@ -60,7 +60,7 @@ Download the latest release from [Releases](./releases) and extract it.
    Displays the full `pyinstaller` command assembled from your current settings. Use **Copy** to grab it for manual use.
 
 6. **Build**
-   Click **▸ Build** to start. Output is streamed to the log panel in real time. On success, artifacts are moved to `<Output Dir>/<name>_Output/`. Optionally auto-delete `build/` and `.spec` after a successful build.
+   Click **▸Build** to start. Output is streamed to the log panel in real time. On success, artifacts are moved to `<Output Dir>/<name>_Output/`. Optionally auto-delete `build/` and `.spec` after a successful build.
 
 7. **`.spec` Import / Export**
    **Import .spec** parses an existing spec file and populates all fields. **Export .spec** writes the current configuration as a `.spec` file.
