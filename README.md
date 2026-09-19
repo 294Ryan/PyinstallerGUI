@@ -1,24 +1,67 @@
-# PyInstaller GUI
+<!---------------- LINKS_START -------------------->
 
-A lightweight, cross-platform GUI frontend for [PyInstaller](https://pyinstaller.org), built with Python's standard `tkinter`. Configure, preview, and run PyInstaller builds without touching the command line.
+[release_badge]: https://img.shields.io/github/release/294Ryan/PyinstallerGUI?color=red&label=Release&style=flat-square
+[star_badge]: https://img.shields.io/endpoint?color=yellow&url=https://api.pinstudios.net/api/badges/stars/294Ryan/PyinstallerGUI&style=flat-square
+[license_badge]: https://img.shields.io/badge/License-GPL--3.0-orange?color=orange&style=flat-square
+[os_badge]: https://img.shields.io/badge/Platform-Windows_%7C_macOS_%7C_Linux-blue?style=flat-square
+[contributors_badge]: https://contrib.rocks/image?repo=294Ryan/PyinstallerGUI
 
-<img src="./images/tk_app.png" width="500">
+[last_release]: https://github.com/294Ryan/PyinstallerGUI/releases/latest
+[release]: https://github.com/294Ryan/PyinstallerGUI/releases
+[star]: https://github.com/294Ryan/PyinstallerGUI/stargazers
+[license]: https://github.com/294Ryan/PyinstallerGUI/blob/main/LICENSE
+[contributors]: https://github.com/294Ryan/PyinstallerGUI/graphs/contributors
+
+<!----------------- LINKS_END --------------------->
+
+<div align='center'>
+  <img id="top" src='images/Banner.png' width='500'>
+  <br>
+  <h3>A lightweight GUI frontend for PyInstaller — configure, preview, and build without touching the CLI.</h3>
+
+  ![Python](https://img.shields.io/badge/python-%233670A0.svg?style=for-the-badge&logo=python&logoColor=ffdd54)
+  <br>
+
+  [![Release][release_badge]][last_release]
+  [![Stars][star_badge]][star]
+  [![License][license_badge]][license]
+  ![Platform][os_badge]
+  <br>
+
+  [Quick Start](#quick-start) | [Features](#features) | [Usage](#usage) | [License](#license) | [Contributors](#contributors)
+
+  <img id="top" src='images/tk_app.png' width='500'>
+
+</div>
 
 ---
 
-## Table of Contents
-- [Key Features](#key-features)
-- [Instructions for Use](#instructions-for-use)
-- [Development Guidelines](#development-guidelines)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [Notes](#notes)
+## **Quick Start**
+
+> [!NOTE]
+> **Requirements:**
+> - Python 3.x (when running from source)
+> - PyInstaller installed in the target Python environment
+
+- **Direct Download (Recommended):** Go to [Releases][release], download the latest version, and run the executable directly — no installation needed.
+- **Run from Source:**
+  ```
+  git clone https://github.com/294Ryan/PyinstallerGUI.git
+  cd PyinstallerGUI
+  python tk_pyinstaller_gui.py
+  ```
+
+> [!TIP]
+> PyInstaller must be available in whichever Python environment you intend to build with:
+> ```
+> pip install pyinstaller
+> ```
 
 ---
 
-## Key Features
+## **Features**
 
-- **Visual build configuration** — Set script, output name, output directory, icon, and interpreter through a point-and-click interface; no CLI flags to memorize.
+- **Visual build configuration** — Set script, output name, output directory, icon, and Python interpreter through a point-and-click interface; no CLI flags to memorize.
 - **Real-time command preview** — The generated `pyinstaller` command updates live as you adjust settings, and can be copied to clipboard with one click.
 - **Data Files tab** — Add individual files or entire directories as bundled resources, with automatic `src → dest` path management.
 - **Imports / Excludes tab** — Manage `--hidden-import` and `--exclude-module` lists via an inline list editor.
@@ -29,93 +72,63 @@ A lightweight, cross-platform GUI frontend for [PyInstaller](https://pyinstaller
 
 ---
 
-## Instructions for Use
+## **Usage**
 
-Download the latest release from [Releases](./releases) and extract it.
+### Basic Settings
+Select the target `.py` script, output name, output directory, `.ico` icon, and Python interpreter (default system Python or a custom path). Choose between `--onefile` / `--onedir` and `--console` / `--windowed`.
 
-- **Launch (executable):**
-  ```
-  tk_pyinstaller_gui_vX.X.X.exe
-  ```
-- **Launch (from source):**
-  ```
-  python tk_pyinstaller_gui.py
-  ```
+> Selecting a script auto-fills **Output Name** and **Output Dir** if left empty.
 
-**Feature Overview:**
+### Data Files
+Add files or directories to bundle. Specify source and destination paths; entries are listed in `src --> dest` format and can be removed individually.
 
-1. **Basic Settings**
-   Select the target `.py` script, output name, output directory, `.ico` icon, and Python interpreter (default or custom path). Choose between `--onefile` / `--onedir` and `--console` / `--windowed`.
+### Imports / Excludes
+Manage **Hidden Imports** and **Exclude Modules** lists. Entries reflect immediately in the command preview.
 
-2. **Data Files**
-   Add files or directories to be bundled. Specify source and destination paths; entries are listed in `src --> dest` format and can be removed individually.
+### Advanced
+Enter raw PyInstaller flags (space-separated) for options not covered by the UI — e.g. `--clean --noupx`.
 
-3. **Imports / Excludes**
-   Manage `Hidden Imports` and `Exclude Modules` lists. Entries are reflected immediately in the command preview.
+### Command Preview
+Displays the full `pyinstaller` command assembled from your current settings. Use **Copy** to grab it for manual use.
 
-4. **Advanced**
-   Enter raw PyInstaller flags (space-separated) for options not covered by the UI, e.g. `--clean --noupx`.
+### Build
+Click **▸ Build** to start. Output is streamed to the log panel in real time. On success, artifacts are moved to `<Output Dir>/<name>_Output/`. Optionally auto-delete `build/` and `.spec` after a successful build.
 
-5. **Command Preview**
-   Displays the full `pyinstaller` command assembled from your current settings. Use **Copy** to grab it for manual use.
-
-6. **Build**
-   Click **▸Build** to start. Output is streamed to the log panel in real time. On success, artifacts are moved to `<Output Dir>/<name>_Output/`. Optionally auto-delete `build/` and `.spec` after a successful build.
-
-7. **`.spec` Import / Export**
-   **Import .spec** parses an existing spec file and populates all fields. **Export .spec** writes the current configuration as a `.spec` file.
+### `.spec` Import / Export
+- **Import .spec** — Parses an existing `.spec` file and populates all fields.
+- **Export .spec** — Writes the current configuration as a `.spec` file.
 
 ---
 
-## Development Guidelines
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/294Ryan/PyinstallerGUI.git
-   ```
-
-2. **Programming Language:** Python 3.x
-
-3. **Dependencies:**
-   - Standard library only (`tkinter`, `subprocess`, `threading`, `shutil`, `os`, `sys`, `re`) — no `pip install` required.
-   - PyInstaller must be installed in the target Python environment for builds to run:
-     ```
-     pip install pyinstaller
-     ```
-
-4. Run directly from source:
-   ```
-   python tk_pyinstaller_gui.py
-   ```
-
-5. Refer to [Technologies Used](#technologies-used) and [Project Structure](#project-structure) as needed.
-
----
-
-## Technologies Used
-
-- **Python 3 / tkinter** — UI framework; standard library, no external GUI dependency.
-- **PyInstaller** — The underlying packaging tool invoked via `subprocess`; must be installed separately.
-- **threading** — Build process runs on a background thread to keep the UI responsive during long builds.
-
----
-
-## Project Structure
+## **Project Structure**
 
 ```
 PyinstallerGUI/
+├── images/
+│   ├── Banner.png
+│   └── tk_app.png
 ├── .gitignore
+├── icon.ico
 ├── LICENSE
 ├── README.md
-├── icon.ico                   # App icon file
-├── tk_pyinstaller_gui.py      # Single-file application entry point
-└── tk_pyinstaller_gui.spec    # .spec file
+├── tk_pyinstaller_gui.py        # Single-file application entry point
+└── tk_pyinstaller_gui.spec      # .spec file
 ```
 
 ---
 
-## Notes
+## **License**
+License: [GPL-3.0][license]
 
-- Maintainer: 294Ryan — [GitHub](https://github.com/294Ryan)
-- Terms of Use: `GPL-3.0 license`
-- <!> Please use this product only within the scope permitted by the terms and conditions of this project. You are solely responsible for any consequences arising from operational errors or improper use.
+> [!WARNING]
+> Please use the contents of this project within the scope permitted by the license. Users are solely responsible for any consequences resulting from improper or negligent use.
+
+---
+
+## **Contributors**
+[![Contributors][contributors_badge]][contributors]
+
+<br><br>
+<div align="center">
+  <a href="#top">Back to top</a>
+</div>
